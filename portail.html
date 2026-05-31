@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ABE — Espace Client</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--cream:#fefaf6;--dark:#1b1b1b;--orange:#da6a32;--orange-light:#f4e6da;--orange-dark:#b8541f;--mid:#4a4a4a;--border:#e8e0d6;--white:#fff;--green:#16a34a;--green-light:#dcfce7;--red:#dc2626;--red-light:#fee2e2;--blue:#1d4ed8;--blue-light:#dbeafe}
+    body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh}
+    #login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--dark);padding:24px}
+    .login-box{background:#fff;border-radius:12px;padding:48px 44px;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,.3)}
+    .login-logo{text-align:center;margin-bottom:32px}
+    .login-logo-icon{width:56px;height:56px;background:var(--orange);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+    .login-logo h1{font-family:'DM Serif Display',serif;font-size:22px;color:var(--dark);margin-bottom:4px}
+    .login-logo p{font-size:13px;color:var(--mid)}
+    .lbl{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+    .linput{width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:6px;padding:12px 14px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--dark);outline:none;transition:border-color .2s;margin-bottom:16px}
+    .linput:focus{border-color:var(--orange)}
+    .lbtn{width:100%;background:var(--orange);color:#fff;border:none;padding:14px;border-radius:6px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .2s}
+    .lbtn:hover{background:var(--orange-dark)}
+    .lerr{background:var(--red-light);color:var(--red);font-size:13px;padding:10px 14px;border-radius:6px;margin-top:12px;display:none;text-align:center}
+    #app-page{display:none}
+    .layout{display:flex;min-height:100vh}
+    .sidebar{width:240px;background:var(--dark);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+    .sl{padding:28px 24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .sl-top{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+    .sl-icon{width:32px;height:32px;background:var(--orange);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .sl-name{font-size:13px;font-weight:700;color:#fff;letter-spacing:.06em}
+    .sl-client{font-size:12px;color:rgba(255,255,255,.45);padding-left:42px}
+    .snav{flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:2px}
+    .stitle{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:12px 12px 6px}
+    .sbtn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:6px;font-size:14px;font-weight:500;color:rgba(255,255,255,.6);cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;transition:all .15s;text-align:left;width:100%}
+    .sbtn:hover{background:rgba(255,255,255,.06);color:#fff}
+    .sbtn.active{background:var(--orange);color:#fff}
+    .sfooter{padding:16px 12px;border-top:1px solid rgba(255,255,255,.08)}
+    .cart-side{background:rgba(255,255,255,.06);border-radius:8px;padding:12px;margin-bottom:8px;display:none}
+    .cart-side.vis{display:block}
+    .cs-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:8px}
+    .cs-total{font-size:20px;font-weight:700;color:#fff}
+    .cs-count{font-size:12px;color:rgba(255,255,255,.5);margin-top:2px}
+    .cs-btn{width:100%;background:var(--orange);color:#fff;border:none;padding:11px;border-radius:6px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .2s;margin-bottom:8px}
+    .cs-btn:hover{background:var(--orange-dark)}
+    .logout{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:6px;font-size:13px;color:rgba(255,255,255,.4);cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;transition:all .15s;width:100%}
+    .logout:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.04)}
+    .main{margin-left:240px;flex:1;padding:36px 44px;min-height:100vh}
+    .panel{display:none}
+    .panel.active{display:block}
+    .ph{margin-bottom:32px}
+    .ph h2{font-family:'DM Serif Display',serif;font-size:28px;color:var(--dark);margin-bottom:6px}
+    .ph p{font-size:15px;color:var(--mid)}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+    .fb{background:#fff;border:1.5px solid var(--border);border-radius:100px;padding:8px 18px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;color:var(--mid);cursor:pointer;transition:all .2s}
+    .fb:hover{border-color:var(--orange);color:var(--orange)}
+    .fb.active{background:var(--orange);border-color:var(--orange);color:#fff}
+    .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+    .pc{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+    .pc:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+    .pc.hidden{display:none}
+    .pi{height:110px;display:flex;align-items:center;justify-content:center;font-size:44px}
+    .pb{padding:16px;display:flex;flex-direction:column;flex:1}
+    .pcat{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+    .pb h4{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:6px}
+    .pb p{font-size:12px;line-height:1.5;color:var(--mid);flex:1}
+    .pfoot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+    .ppr{font-size:18px;font-weight:700;color:var(--dark)}
+    .pht{font-size:11px;font-weight:400;color:var(--mid)}
+    .qc{display:flex;align-items:center;gap:6px}
+    .qb{width:26px;height:26px;border:1.5px solid var(--border);border-radius:4px;background:none;cursor:pointer;font-size:14px;font-weight:600;color:var(--dark);display:flex;align-items:center;justify-content:center;transition:all .15s}
+    .qb:hover{border-color:var(--orange);color:var(--orange)}
+    .qn{font-size:14px;font-weight:700;min-width:20px;text-align:center}
+    .ab{background:var(--dark);color:#fff;border:none;padding:8px 14px;border-radius:5px;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .2s;white-space:nowrap}
+    .ab:hover{background:var(--orange)}
+    .ab.added{background:var(--green)}
+    .ctable{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+    .cth{display:grid;grid-template-columns:1fr 120px 90px 80px;padding:12px 20px;background:var(--cream);border-bottom:1px solid var(--border);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);gap:12px}
+    .crow{display:grid;grid-template-columns:1fr 120px 90px 80px;padding:16px 20px;border-bottom:1px solid var(--border);align-items:center;gap:12px}
+    .crow:last-child{border-bottom:none}
+    .cprod{display:flex;align-items:center;gap:12px}
+    .cpn{font-size:14px;font-weight:600;color:var(--dark)}
+    .cpc{font-size:12px;color:var(--mid)}
+    .cqc{display:flex;align-items:center;gap:8px}
+    .clt{font-size:15px;font-weight:700;color:var(--dark)}
+    .rmb{background:none;border:none;cursor:pointer;color:var(--mid);transition:color .15s;padding:4px}
+    .rmb:hover{color:var(--red)}
+    .cfbar{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-top:16px;display:flex;justify-content:space-between;align-items:center}
+    .ctlbl{font-size:13px;color:var(--mid);margin-bottom:4px}
+    .ctamt{font-size:28px;font-weight:700;color:var(--dark)}
+    .cttva{font-size:12px;color:var(--mid);margin-top:2px}
+    .vbtn{background:var(--orange);color:#fff;border:none;padding:14px 32px;border-radius:6px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .2s;display:flex;align-items:center;gap:8px}
+    .vbtn:hover{background:var(--orange-dark)}
+    .olist{display:flex;flex-direction:column;gap:12px}
+    .ocard{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 24px}
+    .ocardh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .onum{font-size:14px;font-weight:700;color:var(--dark)}
+    .odate{font-size:13px;color:var(--mid)}
+    .ostatus{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;font-size:12px;font-weight:600}
+    .sp{background:#fef9c3;color:#854d0e}
+    .si{background:var(--blue-light);color:var(--blue)}
+    .sa{background:var(--green-light);color:var(--green)}
+    .oisum{font-size:13px;color:var(--mid);line-height:1.7}
+    .otl{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+    .otll{font-size:13px;color:var(--mid)}
+    .otlv{font-size:16px;font-weight:700;color:var(--dark)}
+    .ptag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:4px;font-size:11px;font-weight:600}
+    .tv{background:var(--blue-light);color:var(--blue)}
+    .ti{background:var(--orange-light);color:var(--orange-dark)}
+    .abadge{display:inline-flex;align-items:center;gap:6px;background:var(--orange-light);color:var(--orange-dark);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:4px;margin-bottom:24px}
+    .aorders{display:flex;flex-direction:column;gap:14px}
+    .aocard{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+    .aoh{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border);background:var(--cream)}
+    .aonum{font-size:14px;font-weight:700;color:var(--dark)}
+    .aocl{font-size:13px;color:var(--mid);margin-top:2px}
+    .aobody{padding:16px 20px}
+    .ait{width:100%;border-collapse:collapse}
+    .ait th{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);text-align:left;padding:0 0 8px}
+    .ait td{font-size:13px;color:var(--dark);padding:6px 0;border-top:1px solid var(--border)}
+    .aotr{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:var(--cream);border-top:1px solid var(--border)}
+    .aotl{font-size:13px;color:var(--mid)}
+    .aotv{font-size:18px;font-weight:700;color:var(--dark)}
+    .aoact{display:flex;gap:8px;padding:12px 20px;border-top:1px solid var(--border);flex-wrap:wrap}
+    .admbtn{padding:8px 16px;border-radius:5px;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;border:1.5px solid;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+    .bi{background:var(--blue-light);border-color:var(--blue);color:var(--blue)}
+    .bi:hover{background:var(--blue);color:#fff}
+    .bp{background:var(--green-light);border-color:var(--green);color:var(--green)}
+    .bp:hover{background:var(--green);color:#fff}
+    .bd{background:var(--red-light);border-color:var(--red);color:var(--red)}
+    .bd:hover{background:var(--red);color:#fff}
+    .moverlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .25s}
+    .moverlay.open{opacity:1;pointer-events:all}
+    .modal{background:#fff;border-radius:12px;padding:36px;width:100%;max-width:480px;transform:translateY(16px);transition:transform .25s}
+    .moverlay.open .modal{transform:translateY(0)}
+    .modal h3{font-family:'DM Serif Display',serif;font-size:22px;color:var(--dark);margin-bottom:8px}
+    .modal p{font-size:14px;color:var(--mid);margin-bottom:24px;line-height:1.6}
+    .mlbl{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+    .msel,.mta{width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:6px;padding:11px 14px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--dark);outline:none;margin-bottom:16px;transition:border-color .2s}
+    .msel:focus,.mta:focus{border-color:var(--orange)}
+    .mta{resize:vertical;min-height:80px}
+    .mact{display:flex;gap:10px;justify-content:flex-end}
+    .mcancel{background:none;border:1.5px solid var(--border);color:var(--mid);padding:11px 20px;border-radius:6px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s}
+    .mcancel:hover{border-color:var(--dark);color:var(--dark)}
+    .mconfirm{background:var(--orange);border:none;color:#fff;padding:11px 24px;border-radius:6px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .15s}
+    .mconfirm:hover{background:var(--orange-dark)}
+    .succ{text-align:center;padding:60px 40px;display:none}
+    .succ.show{display:block}
+    .sicon{width:72px;height:72px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+    .succ h3{font-family:'DM Serif Display',serif;font-size:24px;color:var(--dark);margin-bottom:12px}
+    .succ p{font-size:15px;color:var(--mid);max-width:340px;margin:0 auto 28px;line-height:1.6}
+    .empty{text-align:center;padding:60px 24px;color:var(--mid)}
+    .empty .ei{font-size:48px;margin-bottom:16px}
+    .empty p{font-size:15px}
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fff;padding:12px 22px;border-radius:8px;font-size:14px;font-weight:500;z-index:3000;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
+</head>
+<body>
+
+<div id="login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 21V12h6v9"/><path d="M12 3L8 8h8L12 3z"/></svg></div>
+      <h1>ABE Property Mgmt</h1>
+      <p>Espace client — Commandes &amp; fournitures</p>
+    </div>
+    <label class="lbl">Identifiant client</label>
+    <input class="linput" type="text" id="lu" placeholder="ex: client001" autocomplete="off"/>
+    <label class="lbl">Mot de passe</label>
+    <input class="linput" type="password" id="lp" placeholder="••••••••"/>
+    <button class="lbtn" onclick="doLogin()">Se connecter →</button>
+    <div class="lerr" id="lerr">Identifiant ou mot de passe incorrect.</div>
+  </div>
+</div>
+
+<div id="app-page">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sl">
+        <div class="sl-top">
+          <div class="sl-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 21V12h6v9"/><path d="M12 3L8 8h8L12 3z"/></svg></div>
+          <span class="sl-name">ABE PROPERTY</span>
+        </div>
+        <div class="sl-client" id="slclient"></div>
+      </div>
+      <nav class="snav">
+        <div class="stitle">Menu</div>
+        <button class="sbtn active" id="nav-catalogue" onclick="go('catalogue')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Catalogue
+        </button>
+        <button class="sbtn" id="nav-panier" onclick="go('panier')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Mon panier
+          <span id="cbadge" style="margin-left:auto;background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;display:none">0</span>
+        </button>
+        <button class="sbtn" id="nav-historique" onclick="go('historique')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Mes commandes
+        </button>
+        <div id="admnav" style="display:none">
+          <div class="stitle">Administration</div>
+          <button class="sbtn" id="nav-admin" onclick="go('admin')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Toutes les commandes
+          </button>
+        </div>
+      </nav>
+      <div class="sfooter">
+        <div class="cart-side" id="csside">
+          <div class="cs-title">🛒 Panier en cours</div>
+          <div class="cs-total" id="cstotal">0 €</div>
+          <div class="cs-count" id="cscount">0 article</div>
+        </div>
+        <button class="cs-btn" id="csbtn" onclick="go('panier')" style="display:none">Voir mon panier →</button>
+        <button class="logout" onclick="doLogout()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Se déconnecter
+        </button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="panel active" id="panel-catalogue">
+        <div class="ph"><h2>Catalogue produits</h2><p>Sélectionnez vos produits, ajoutez au panier et validez. Vous recevrez votre facture sous 24h.</p></div>
+        <div class="filters">
+          <button class="fb active" onclick="filt('all',this)">Tout voir</button>
+          <button class="fb" onclick="filt('incendie',this)">🧯 Sécurité incendie</button>
+          <button class="fb" onclick="filt('nuisibles',this)">🪲 Anti-nuisibles</button>
+          <button class="fb" onclick="filt('hygiene',this)">🧹 Hygiène</button>
+          <button class="fb" onclick="filt('epi',this)">🦺 EPI</button>
+          <button class="fb" onclick="filt('bureau',this)">📦 Fournitures</button>
+        </div>
+        <div class="pgrid" id="pgrid"></div>
+      </div>
+
+      <div class="panel" id="panel-panier">
+        <div class="ph"><h2>Mon panier</h2><p>Vérifiez votre sélection avant de valider la commande.</p></div>
+        <div class="empty" id="cempty"><div class="ei">🛒</div><p>Votre panier est vide.<br>Parcourez le catalogue pour ajouter des produits.</p></div>
+        <div id="cwrap" style="display:none">
+          <div class="ctable">
+            <div class="cth"><span>Produit</span><span>Quantité</span><span>Prix unit.</span><span>Total</span></div>
+            <div id="crows"></div>
+          </div>
+          <div class="cfbar">
+            <div><div class="ctlbl">Total commande</div><div class="ctamt" id="cgtotal">0 €</div><div class="cttva">HT — TVA en sus</div></div>
+            <button class="vbtn" onclick="openModal()">Valider la commande <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-historique">
+        <div class="ph"><h2>Mes commandes</h2><p>Suivez l'état de vos commandes et factures.</p></div>
+        <div id="histcont"></div>
+      </div>
+
+      <div class="panel" id="panel-admin">
+        <div class="ph">
+          <div class="abadge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Accès administrateur</div>
+          <h2>Toutes les commandes</h2>
+          <p>Gérez les commandes, changez les statuts et créez les factures sur Indy.</p>
+        </div>
+        <div id="admcont"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="moverlay" id="moverlay">
+  <div class="modal">
+    <div id="mform">
+      <h3>Confirmer la commande</h3>
+      <p>Choisissez votre mode de règlement. Stanislas vous enverra la facture sous 24h avec les instructions de paiement.</p>
+      <label class="mlbl">Mode de paiement</label>
+      <select class="msel" id="pmode">
+        <option value="indy">💳 Paiement en ligne par carte (lien Indy)</option>
+        <option value="virement">🏦 Virement bancaire (RIB joint à la facture)</option>
+      </select>
+      <label class="mlbl">Note / adresse de livraison (optionnel)</label>
+      <textarea class="mta" id="onote" placeholder="Précisions sur la commande, adresse de livraison..."></textarea>
+      <div class="mact">
+        <button class="mcancel" onclick="closeModal()">Annuler</button>
+        <button class="mconfirm" onclick="submitOrder()">Envoyer la commande →</button>
+      </div>
+    </div>
+    <div class="succ" id="msucc">
+      <div class="sicon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h3>Commande envoyée !</h3>
+      <p>Stanislas a reçu votre demande et vous enverra la facture sous 24h avec les instructions de paiement.</p>
+      <button class="vbtn" style="margin:0 auto" onclick="closeModal();go('historique')">Voir mes commandes</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════ CLIENTS — Modifier selon tes clients ═══════
+const CLIENTS={
+  'admin':{password:'abe2025admin',name:'Stanislas Riva',email:'abe.facilities@gmail.com',isAdmin:true,pay:'virement'},
+  'client001':{password:'dupont2025',name:'Cabinet Dupont & Associés',email:'contact@dupont.fr',isAdmin:false,pay:'indy'},
+  'client002':{password:'immosud88',name:'ImmoSud Gestion',email:'gestion@immosud.fr',isAdmin:false,pay:'virement'},
+  'client003':{password:'syndic75',name:'Syndic Paris 8e',email:'syndic@paris8.fr',isAdmin:false,pay:'indy'}
+};
+
+const PRODUCTS=[
+  {id:'p1',cat:'incendie',e:'🧯',n:'Extincteur CO₂ 2kg',d:'Homologué EN3, feux électriques et liquides. Livré avec support mural.',p:89},
+  {id:'p2',cat:'incendie',e:'🔔',n:'Détecteur de fumée NF',d:'Certifié NF, alarme 85dB, autonomie 10 ans.',p:24},
+  {id:'p3',cat:'incendie',e:'🚪',n:'Panneau évacuation lumineux',d:'Signalétique conforme ISO 7010 avec éclairage de secours.',p:38},
+  {id:'p4',cat:'incendie',e:'🧰',n:'Trousse premiers secours CE',d:'Conforme CE pour 20 personnes. Idéale post-formation SST.',p:54},
+  {id:'p5',cat:'nuisibles',e:'🪤',n:"Station d'appâtage pro",d:'Boîtier sécurisé anti-effraction pour rongeurs.',p:19},
+  {id:'p6',cat:'nuisibles',e:'💨',n:'Insecticide professionnel 5L',d:'Large spectre blattes, fourmis, punaises. Concentré à diluer.',p:62},
+  {id:'p7',cat:'hygiene',e:'🧴',n:'Distributeur gel hydroalcoolique',d:'Distributeur mural 1L sans contact, rechargeable.',p:45},
+  {id:'p8',cat:'hygiene',e:'🧺',n:'Kit nettoyage sols pro',d:'Chariot, serpillère microfibre, seau double compartiment, produit 5L.',p:118},
+  {id:'p9',cat:'epi',e:'🦺',n:'Gilet haute visibilité EN471',d:'Classe 2, bandes rétroréfléchissantes, taille universelle.',p:12},
+  {id:'p10',cat:'epi',e:'🧤',n:'Gants nitrile résistants ×100',d:'Protection chimique et mécanique, sans latex, taille M/L.',p:28},
+  {id:'p11',cat:'bureau',e:'📦',n:"Étiquettes d'inventaire ×500",d:'Adhésives numérotées, résistantes. Gestion de stock.',p:22},
+  {id:'p12',cat:'bureau',e:'🗂️',n:'Logiciel gestion de stock',d:'Licence annuelle 3 utilisateurs, alertes réappro.',p:199,sfx:'/an'}
+];
+
+const BG={incendie:'#fff3ee',nuisibles:'#f0faef',hygiene:'#eef6ff',epi:'#fdf8ee',bureau:'#f5f0ff'};
+const CLAB={incendie:'Sécurité incendie',nuisibles:'Anti-nuisibles',hygiene:'Hygiène & entretien',epi:'EPI & sécurité',bureau:'Fournitures'};
+
+let user=null, cart={};
+let orders=JSON.parse(localStorage.getItem('abe_o')||'[]');
+
+function doLogin(){
+  const u=document.getElementById('lu').value.trim();
+  const p=document.getElementById('lp').value;
+  if(CLIENTS[u]&&CLIENTS[u].password===p){
+    user={id:u,...CLIENTS[u]};
+    document.getElementById('lerr').style.display='none';
+    document.getElementById('login-page').style.display='none';
+    document.getElementById('app-page').style.display='block';
+    document.getElementById('slclient').textContent=user.name;
+    if(user.isAdmin)document.getElementById('admnav').style.display='block';
+    renderProds();renderCart();renderHist();
+    if(user.isAdmin)renderAdmin();
+  }else{document.getElementById('lerr').style.display='block';}
+}
+
+function doLogout(){
+  user=null;cart={};
+  document.getElementById('app-page').style.display='none';
+  document.getElementById('login-page').style.display='flex';
+  document.getElementById('lu').value='';document.getElementById('lp').value='';
+  document.getElementById('admnav').style.display='none';
+  document.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nav-catalogue').classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-catalogue').classList.add('active');
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('login-page').style.display!=='none')doLogin();});
+
+function go(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  const b=document.getElementById('nav-'+name);if(b)b.classList.add('active');
+  if(name==='panier')renderCart();
+  if(name==='historique')renderHist();
+  if(name==='admin')renderAdmin();
+}
+
+function renderProds(){
+  document.getElementById('pgrid').innerHTML=PRODUCTS.map(p=>`
+    <div class="pc" data-cat="${p.cat}">
+      <div class="pi" style="background:${BG[p.cat]}">${p.e}</div>
+      <div class="pb">
+        <span class="pcat">${CLAB[p.cat]}</span>
+        <h4>${p.n}</h4><p>${p.d}</p>
+        <div class="pfoot">
+          <div><span class="ppr">${p.p} €</span><span class="pht"> HT${p.sfx||''}</span></div>
+          <div class="qc">
+            <button class="qb" onclick="cq('${p.id}',-1)">−</button>
+            <span class="qn" id="qn${p.id}">1</span>
+            <button class="qb" onclick="cq('${p.id}',1)">+</button>
+            <button class="ab" id="ab${p.id}" onclick="ac('${p.id}')">Ajouter →</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filt(cat,btn){
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pc').forEach(c=>c.classList.toggle('hidden',cat!=='all'&&c.dataset.cat!==cat));
+}
+
+function cq(id,d){const e=document.getElementById('qn'+id);e.textContent=Math.max(1,parseInt(e.textContent)+d);}
+
+function ac(id){
+  const q=parseInt(document.getElementById('qn'+id).textContent);
+  cart[id]=(cart[id]||0)+q;
+  const b=document.getElementById('ab'+id);
+  b.textContent='✓ Ajouté';b.classList.add('added');
+  setTimeout(()=>{b.textContent='Ajouter →';b.classList.remove('added');},1400);
+  showToast('✓ '+PRODUCTS.find(p=>p.id===id).n+' × '+q+' ajouté');
+  updBadge();updSide();
+}
+
+function renderCart(){
+  const keys=Object.keys(cart).filter(k=>cart[k]>0);
+  const empty=!keys.length;
+  document.getElementById('cempty').style.display=empty?'block':'none';
+  document.getElementById('cwrap').style.display=empty?'none':'block';
+  if(!empty){
+    let tot=0;
+    document.getElementById('crows').innerHTML=keys.map(id=>{
+      const p=PRODUCTS.find(pr=>pr.id===id),q=cart[id],line=p.p*q;tot+=line;
+      return `<div class="crow">
+        <div class="cprod"><span style="font-size:28px">${p.e}</span><div><div class="cpn">${p.n}</div><div class="cpc">${CLAB[p.cat]}</div></div></div>
+        <div class="cqc"><button class="qb" onclick="uq('${id}',-1)">−</button><span class="qn">${q}</span><button class="qb" onclick="uq('${id}',1)">+</button></div>
+        <span style="font-size:14px;color:var(--mid)">${p.p} €</span>
+        <div style="display:flex;align-items:center;gap:8px"><span class="clt">${line} €</span>
+        <button class="rmb" onclick="rm('${id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+      </div>`;
+    }).join('');
+    document.getElementById('cgtotal').textContent=tot+' €';
+  }
+  updBadge();updSide();
+}
+
+function uq(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];renderCart();}
+function rm(id){delete cart[id];renderCart();}
+
+function updBadge(){
+  const n=Object.values(cart).reduce((a,b)=>a+b,0);
+  const b=document.getElementById('cbadge');b.textContent=n;b.style.display=n>0?'inline':'none';
+}
+
+function updSide(){
+  const keys=Object.keys(cart).filter(k=>cart[k]>0);
+  const n=keys.reduce((s,k)=>s+cart[k],0);
+  const tot=keys.reduce((s,id)=>s+PRODUCTS.find(p=>p.id===id).p*cart[id],0);
+  document.getElementById('csside').classList.toggle('vis',n>0);
+  document.getElementById('csbtn').style.display=n>0?'block':'none';
+  document.getElementById('cstotal').textContent=tot+' €';
+  document.getElementById('cscount').textContent=n+' article'+(n>1?'s':'');
+}
+
+function openModal(){
+  document.getElementById('pmode').value=user.pay||'indy';
+  document.getElementById('mform').style.display='block';
+  document.getElementById('msucc').classList.remove('show');
+  document.getElementById('moverlay').classList.add('open');
+}
+
+function closeModal(){document.getElementById('moverlay').classList.remove('open');}
+
+function submitOrder(){
+  const keys=Object.keys(cart).filter(k=>cart[k]>0);
+  if(!keys.length)return;
+  const pm=document.getElementById('pmode').value;
+  const note=document.getElementById('onote').value.trim();
+  const items=keys.map(id=>{const p=PRODUCTS.find(pr=>pr.id===id);return{id,n:p.n,e:p.e,p:p.p,q:cart[id],t:p.p*cart[id]};});
+  const tot=items.reduce((s,i)=>s+i.t,0);
+  const o={id:'CMD-'+Date.now(),cid:user.id,cn:user.name,ce:user.email,date:new Date().toLocaleDateString('fr-FR'),ts:Date.now(),items,tot,pm,note:note||null,st:'pending'};
+  orders.push(o);localStorage.setItem('abe_o',JSON.stringify(orders));
+  fetch('https://formspree.io/f/VOTRE_ID_FORMSPREE',{
+    method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},
+    body:JSON.stringify({_subject:'🛒 Commande '+o.id+' — '+user.name,commande:o.id,client:user.name,email:user.email,paiement:pm==='indy'?'💳 Lien Indy (carte)':'🏦 Virement bancaire',produits:items.map(i=>i.e+' '+i.n+' × '+i.q+' = '+i.t+' €').join('\n'),total_ht:tot+' €',note:note||'Aucune'})
+  }).catch(()=>{});
+  cart={};
+  document.getElementById('mform').style.display='none';
+  document.getElementById('msucc').classList.add('show');
+  updBadge();updSide();renderHist();
+}
+
+function renderHist(){
+  if(!user)return;
+  const mine=orders.filter(o=>o.cid===user.id).sort((a,b)=>b.ts-a.ts);
+  const c=document.getElementById('histcont');
+  if(!mine.length){c.innerHTML='<div class="empty"><div class="ei">📋</div><p>Aucune commande pour le moment.<br>Parcourez le catalogue pour démarrer !</p></div>';return;}
+  c.innerHTML='<div class="olist">'+mine.map(o=>`
+    <div class="ocard">
+      <div class="ocardh">
+        <div><div class="onum">${o.id}</div><div class="odate">${o.date}</div></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">${sb(o.st)}<span class="ptag ${o.pm==='indy'?'ti':'tv'}">${o.pm==='indy'?'💳 Lien Indy':'🏦 Virement'}</span></div>
+      </div>
+      <div class="oisum">${o.items.map(i=>i.e+' '+i.n+' × '+i.q).join(' · ')}${o.note?'<br><small>📝 '+o.note+'</small>':''}</div>
+      <div class="otl"><span class="otll">Total HT</span><span class="otlv">${o.tot} €</span></div>
+    </div>`).join('')+'</div>';
+}
+
+function renderAdmin(){
+  if(!user?.isAdmin)return;
+  const sorted=[...orders].sort((a,b)=>b.ts-a.ts);
+  const c=document.getElementById('admcont');
+  if(!sorted.length){c.innerHTML='<div class="empty"><div class="ei">📬</div><p>Aucune commande reçue pour le moment.</p></div>';return;}
+  c.innerHTML='<div class="aorders">'+sorted.map(o=>`
+    <div class="aocard">
+      <div class="aoh">
+        <div><div class="aonum">${o.id}</div><div class="aocl">${o.cn} · ${o.date}</div></div>
+        <div style="display:flex;align-items:center;gap:8px"><span class="ptag ${o.pm==='indy'?'ti':'tv'}">${o.pm==='indy'?'💳 Lien Indy':'🏦 Virement'}</span>${sb(o.st)}</div>
+      </div>
+      <div class="aobody">
+        <table class="ait"><thead><tr><th>Produit</th><th style="text-align:center">Qté</th><th style="text-align:right">Unit.</th><th style="text-align:right">Total</th></tr></thead>
+        <tbody>${o.items.map(i=>'<tr><td>'+i.e+' '+i.n+'</td><td style="text-align:center">'+i.q+'</td><td style="text-align:right">'+i.p+' €</td><td style="text-align:right;font-weight:700">'+i.t+' €</td></tr>').join('')}</tbody></table>
+        ${o.note?'<p style="margin-top:12px;font-size:13px;color:var(--mid);background:var(--cream);padding:10px 12px;border-radius:6px">📝 '+o.note+'</p>':''}
+      </div>
+      <div class="aotr"><span class="aotl">✉️ <strong>${o.ce}</strong></span><span class="aotv">${o.tot} € HT</span></div>
+      <div class="aoact">
+        <a href="https://app.indy.fr" target="_blank" class="admbtn bi">📄 Créer facture sur Indy</a>
+        ${o.st!=='invoiced'&&o.st!=='paid'?'<button class="admbtn bi" onclick="ss(\''+o.id+'\',\'invoiced\')">✉️ Facture envoyée</button>':''}
+        ${o.st!=='paid'?'<button class="admbtn bp" onclick="ss(\''+o.id+'\',\'paid\')">✅ Marquer payée</button>':''}
+        <button class="admbtn bd" onclick="del('${o.id}')">🗑 Supprimer</button>
+      </div>
+    </div>`).join('')+'</div>';
+}
+
+function ss(id,st){const i=orders.findIndex(o=>o.id===id);if(i>=0){orders[i].st=st;localStorage.setItem('abe_o',JSON.stringify(orders));renderAdmin();showToast('Statut mis à jour');}}
+function del(id){orders=orders.filter(o=>o.id!==id);localStorage.setItem('abe_o',JSON.stringify(orders));renderAdmin();showToast('Commande supprimée');}
+
+function sb(s){return{pending:'<span class="ostatus sp">⏳ En attente</span>',invoiced:'<span class="ostatus si">📄 Facturée</span>',paid:'<span class="ostatus sa">✅ Payée</span>'}[s]||'';}
+
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+
+document.getElementById('moverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+</script>
+</body>
+</html>

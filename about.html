@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>À propos — ABE Property Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .about-img { width: 100%; border-radius: 12px; overflow: hidden; background: var(--orange-light); height: 400px; display: flex; align-items: center; justify-content: center; font-size: 80px; }
+    .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 48px; }
+    .value-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 28px; text-align: center; }
+    .value-icon { font-size: 36px; margin-bottom: 16px; }
+    .value-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .value-card p { font-size: 13px; color: var(--mid); line-height: 1.6; }
+    .team-section { background: var(--dark); }
+    .team-section .section-title { color: white; }
+    .team-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 32px; text-align: center; }
+    .team-avatar { width: 80px; height: 80px; background: var(--orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; color: white; margin: 0 auto 16px; }
+    .team-name { font-size: 18px; font-weight: 700; color: white; margin-bottom: 4px; }
+    .team-role { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 16px; }
+    .team-bio { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.7; }
+
+    /* ── BLOC "ABOUT 3" (adapté shadcn → HTML/CSS) ── */
+    .about3-header { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: 56px; }
+    .about3-header h2 { font-family: 'DM Serif Display', serif; font-size: clamp(34px,4vw,48px); line-height: 1.1; letter-spacing: -0.02em; }
+    .about3-header p { font-size: 16px; line-height: 1.7; color: var(--mid); }
+
+    .about3-gallery { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+    .about3-main-img { width: 100%; height: 100%; max-height: 560px; min-height: 360px; object-fit: cover; border-radius: 14px; display: block; }
+    .about3-sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+    .about3-breakout {
+      display: flex; flex-direction: column; gap: 20px;
+      background: white; border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px;
+    }
+    .about3-breakout-icon { width: 52px; height: 52px; background: var(--orange-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .about3-breakout-icon svg { width: 26px; height: 26px; color: var(--orange); }
+    .about3-breakout h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .about3-breakout p { font-size: 14px; line-height: 1.6; color: var(--mid); }
+    .about3-secondary-img { width: 100%; flex: 1; min-height: 180px; object-fit: cover; border-radius: 14px; display: block; }
+
+    /* logos clients */
+    .about3-companies { padding: 72px 0 8px; text-align: center; }
+    .about3-companies > p { font-size: 14px; font-weight: 600; letter-spacing: 0.04em; color: var(--mid); margin-bottom: 32px; }
+    .about3-logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 18px; }
+    .about3-logo {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: var(--cream); border: 1px solid var(--border);
+      border-radius: 100px; padding: 11px 20px;
+      font-size: 14px; font-weight: 600; color: var(--mid);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .about3-logo:hover { border-color: var(--orange); color: var(--dark); }
+    .about3-logo svg { width: 16px; height: 16px; color: var(--orange); }
+
+    /* bloc chiffres avec motif quadrillé */
+    .about3-achievements {
+      position: relative; overflow: hidden;
+      background: var(--dark); color: white;
+      border-radius: 16px; padding: 56px 48px;
+    }
+    .about3-achievements h2 { font-family: 'DM Serif Display', serif; font-size: clamp(28px,3vw,38px); margin-bottom: 14px; }
+    .about3-achievements > .about3-ach-intro { max-width: 540px; font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.6); position: relative; z-index: 1; }
+    .about3-stats { position: relative; z-index: 1; margin-top: 44px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px; }
+    .about3-stat { display: flex; flex-direction: column; gap: 8px; }
+    .about3-stat-label { font-size: 13px; color: rgba(255,255,255,0.5); letter-spacing: 0.03em; }
+    .about3-stat-value { font-family: 'DM Serif Display', serif; font-size: clamp(34px,4vw,48px); color: var(--orange); line-height: 1; }
+    .about3-grid-pattern {
+      pointer-events: none; position: absolute; inset: 0; z-index: 0;
+      background-image: linear-gradient(to right, rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.6) 1px, transparent 1px);
+      background-size: 64px 64px; opacity: 0.06;
+      -webkit-mask-image: linear-gradient(to bottom right, #000, transparent 65%);
+      mask-image: linear-gradient(to bottom right, #000, transparent 65%);
+    }
+
+    @media(max-width:900px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .about3-header { grid-template-columns: 1fr; gap: 16px; }
+      .about3-gallery { grid-template-columns: 1fr; }
+      .about3-achievements { padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+<div id="header-placeholder"></div>
+<main>
+  <div class="page-hero">
+    <span class="section-label">À propos</span>
+    <h1 class="section-title">Qui sommes-nous ?</h1>
+    <p class="section-desc">ABE Property Management, votre partenaire de confiance en Île-de-France depuis plus de 12 ans.</p>
+  </div>
+  <div class="breadcrumb"><a href="index.html">Accueil</a> › <span>À propos</span></div>
+
+  <section>
+    <div class="about-grid">
+      <div>
+        <span class="section-label">Notre histoire</span>
+        <h2 class="section-title">Une expertise construite sur le terrain</h2>
+        <p style="font-size:16px;line-height:1.8;color:var(--mid);margin-bottom:20px;">Fondée par Stanislas Riva, ABE Property Management est née d'un constat simple : les propriétaires et gestionnaires immobiliers manquaient d'un partenaire global, réactif et fiable pour gérer leurs biens et leurs locaux.</p>
+        <p style="font-size:16px;line-height:1.8;color:var(--mid);margin-bottom:20px;">Depuis notre création, nous avons accompagné plus de 500 biens en Île-de-France, de la gestion locative à la sécurité incendie en passant par la dératisation et les formations SST.</p>
+        <p style="font-size:16px;line-height:1.8;color:var(--mid);">Notre approche : des solutions sur-mesure, une équipe réactive disponible 24h/24, et un reporting transparent à chaque étape.</p>
+      </div>
+      <div class="about-img">🏢</div>
+    </div>
+  </section>
+
+  <!-- ── BLOC "ABOUT 3" : galerie + encart + logos + chiffres ── -->
+  <section style="background:white;">
+    <div class="about3-header reveal">
+      <h2>Bien plus qu'un prestataire,<br>un partenaire de proximité</h2>
+      <p>ABE Property Management accompagne propriétaires, syndics et entreprises avec des solutions sur-mesure, une équipe réactive et un suivi transparent à chaque étape.</p>
+    </div>
+
+    <div class="about3-gallery reveal reveal-delay-1">
+      <img class="about3-main-img" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&q=80" alt="Équipe ABE en intervention"/>
+      <div class="about3-sidebar">
+        <div class="about3-breakout">
+          <div class="about3-breakout-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 21V12h6v9"/><path d="M12 3L8 8h8L12 3z"/></svg>
+          </div>
+          <div>
+            <h3>Une offre globale, un seul interlocuteur</h3>
+            <p>De la gestion locative à la sécurité incendie : centralisez tous vos besoins immobiliers et opérationnels chez un partenaire unique.</p>
+          </div>
+          <a href="services.html" class="btn-secondary" style="margin-right:auto;">Découvrir nos services →</a>
+        </div>
+        <img class="about3-secondary-img" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80" alt="Bien immobilier géré par ABE"/>
+      </div>
+    </div>
+
+    <!-- logos clients -->
+    <div class="about3-companies reveal">
+      <p>Ils nous font confiance au quotidien</p>
+      <div class="about3-logos">
+        <span class="about3-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 21V12h6v9"/><path d="M12 3L8 8h8L12 3z"/></svg>Nexity Résidences</span>
+        <span class="about3-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Bouygues Immobilier</span>
+        <span class="about3-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>Cabinet Rivoli</span>
+        <span class="about3-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Syndicat Haussmann 8e</span>
+        <span class="about3-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 21V12h6v9"/><path d="M12 3L8 8h8L12 3z"/></svg>Gecina Patrimoine</span>
+        <span class="about3-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Icade Promotion</span>
+        <span class="about3-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Karl Lagerfeld</span>
+        <span class="about3-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4L12 17l-6.3 4.4L8 14 2 9.4h7.6z"/></svg>Pierre Yovanovitch</span>
+        <span class="about3-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="12" r="6"/><circle cx="16" cy="12" r="6"/></svg>Chanel</span>
+      </div>
+    </div>
+
+    <!-- bloc chiffres -->
+    <div class="about3-achievements reveal reveal-delay-1">
+      <div class="about3-grid-pattern"></div>
+      <h2>Nos résultats en chiffres</h2>
+      <p class="about3-ach-intro">Douze années d'expertise terrain au service de la performance et de la tranquillité de nos clients en Île-de-France.</p>
+      <div class="about3-stats">
+        <div class="about3-stat"><span class="about3-stat-label">Biens gérés</span><span class="about3-stat-value">500+</span></div>
+        <div class="about3-stat"><span class="about3-stat-label">Années d'expérience</span><span class="about3-stat-value">12</span></div>
+        <div class="about3-stat"><span class="about3-stat-label">Clients satisfaits</span><span class="about3-stat-value">98%</span></div>
+        <div class="about3-stat"><span class="about3-stat-label">Disponibilité</span><span class="about3-stat-value">24/7</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--cream);">
+    <span class="section-label">Nos valeurs</span>
+    <h2 class="section-title">Ce qui nous guide</h2>
+    <div class="values-grid">
+      <div class="value-card"><div class="value-icon">⚡</div><h3>Réactivité</h3><p>Intervention sous 24h, disponibilité 7j/7 pour les urgences.</p></div>
+      <div class="value-card"><div class="value-icon">🎯</div><h3>Excellence</h3><p>Des prestations de qualité, des techniciens certifiés.</p></div>
+      <div class="value-card"><div class="value-icon">🤝</div><h3>Confiance</h3><p>Reporting transparent, suivi rigoureux de chaque intervention.</p></div>
+      <div class="value-card"><div class="value-icon">🌿</div><h3>Responsabilité</h3><p>Produits homologués, pratiques respectueuses de l'environnement.</p></div>
+    </div>
+  </section>
+
+  <section class="team-section">
+    <span class="section-label">Notre équipe</span>
+    <h2 class="section-title">Les personnes derrière ABE</h2>
+    <div style="max-width:400px;margin-top:48px;">
+      <div class="team-card">
+        <div class="team-avatar">S</div>
+        <div class="team-name">Stanislas Riva</div>
+        <div class="team-role">Fondateur & Gérant — ABE Property Management</div>
+        <div class="team-bio">Spécialiste en facility management et gestion immobilière, Stanislas accompagne depuis plus de 12 ans propriétaires et entreprises dans la gestion de leurs biens en Île-de-France.</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="text-align:center;">
+    <span class="section-label">Travaillons ensemble</span>
+    <h2 class="section-title">Prêt à nous faire confiance ?</h2>
+    <p class="section-desc" style="margin:0 auto 36px;">Contactez-nous pour un devis gratuit et sans engagement.</p>
+    <a href="contact.html" class="btn-primary">Demander un devis gratuit →</a>
+  </section>
+</main>
+<div id="footer-placeholder"></div>
+<script src="components.js"></script>
+<script>renderHeader('about'); renderFooter();</script>
+</body>
+</html>

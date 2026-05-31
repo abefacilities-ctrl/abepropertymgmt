@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Marketplace — ABE Property Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .marketplace-layout { display: flex; gap: 40px; align-items: flex-start; }
+    .filters-sidebar { flex: 0 0 220px; position: sticky; top: 100px; }
+    .filters-sidebar h3 { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); margin-bottom: 16px; }
+    .filter-list { display: flex; flex-direction: column; gap: 6px; }
+    .filter-btn { display: flex; align-items: center; gap: 10px; background: transparent; border: 1.5px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; color: var(--mid); cursor: pointer; transition: all 0.2s; text-align: left; }
+    .filter-btn:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-light); }
+    .filter-btn.active { background: var(--orange); border-color: var(--orange); color: white; }
+    .products-area { flex: 1; }
+    .products-count { font-size: 14px; color: var(--mid); margin-bottom: 24px; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+    .prod-card { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+    .prod-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+    .prod-card.hidden { display: none; }
+    .prod-img { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 48px; }
+    .prod-body { padding: 18px; display: flex; flex-direction: column; flex: 1; }
+    .prod-cat { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
+    .prod-body h4 { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+    .prod-body p { font-size: 13px; line-height: 1.6; color: var(--mid); flex: 1; }
+    .prod-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .prod-price { font-size: 20px; font-weight: 700; color: var(--dark); }
+    .prod-ht { font-size: 11px; font-weight: 400; color: var(--mid); }
+    .prod-btn { background: var(--dark); color: white; border: none; padding: 8px 14px; border-radius: 4px; font-size: 12px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+    .prod-btn:hover { background: var(--orange); }
+    .prod-btn.added { background: #16a34a; }
+    .cart-float { position: fixed; bottom: 32px; right: 32px; z-index: 500; background: var(--dark); color: white; border: none; border-radius: 50px; padding: 14px 22px; font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; display: none; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transition: transform 0.2s, background 0.2s; }
+    .cart-float:hover { background: var(--orange); transform: translateY(-2px); }
+    .cart-float.visible { display: flex; }
+    .cart-badge-float { background: var(--orange); color: white; font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+    .cart-panel { position: fixed; top: 0; right: 0; bottom: 0; width: 420px; max-width: 95vw; background: white; z-index: 2001; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; box-shadow: -8px 0 40px rgba(0,0,0,0.15); }
+    .cart-panel.open { transform: translateX(0); }
+    .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 24px 28px; border-bottom: 1px solid var(--border); }
+    .cart-header h3 { font-size: 18px; font-weight: 700; }
+    .cart-close { background: none; border: none; cursor: pointer; color: var(--mid); padding: 4px; }
+    .cart-items { flex: 1; overflow-y: auto; padding: 20px 28px; }
+    .cart-empty-p { text-align: center; padding: 60px 20px; color: var(--mid); }
+    .cart-empty-p .ei { font-size: 48px; margin-bottom: 16px; }
+    .cart-item { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .cart-item-emoji { font-size: 32px; flex-shrink: 0; }
+    .cart-item-info { flex: 1; }
+    .cart-item-name { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+    .cart-item-price { font-size: 13px; color: var(--mid); }
+    .cart-item-qty { display: flex; align-items: center; gap: 8px; }
+    .qty-btn { width: 28px; height: 28px; border: 1.5px solid var(--border); border-radius: 4px; background: none; cursor: pointer; font-size: 16px; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .qty-btn:hover { border-color: var(--orange); color: var(--orange); }
+    .qty-num { font-size: 14px; font-weight: 700; min-width: 20px; text-align: center; }
+    .cart-footer { padding: 20px 28px 28px; border-top: 1px solid var(--border); }
+    .cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .cart-total-label { font-size: 14px; color: var(--mid); }
+    .cart-total-amount { font-size: 24px; font-weight: 700; color: var(--dark); }
+    .cart-checkout { width: 100%; background: var(--orange); color: white; border: none; padding: 16px; border-radius: 6px; font-size: 15px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.2s; }
+    .cart-checkout:hover { background: var(--orange-dark); }
+    .cart-checkout-note { font-size: 12px; color: var(--mid); text-align: center; margin-top: 10px; }
+    @media(max-width:900px) { .marketplace-layout { flex-direction: column; } .filters-sidebar { position: static; width: 100%; } .filter-list { flex-direction: row; flex-wrap: wrap; } }
+  </style>
+</head>
+<body>
+<div id="header-placeholder"></div>
+<main>
+  <div class="page-hero">
+    <span class="section-label">Marketplace</span>
+    <h1 class="section-title">Matériel professionnel</h1>
+    <p class="section-desc">Commandez vos fournitures directement en ligne. Devis sous 24h, livraison partout en France.</p>
+  </div>
+  <div class="breadcrumb"><a href="index.html">Accueil</a> › <span>Marketplace</span></div>
+
+  <section>
+    <div class="marketplace-layout">
+      <div class="filters-sidebar">
+        <h3>Catégories</h3>
+        <div class="filter-list">
+          <button class="filter-btn active" onclick="filterCat('all',this)">🏷️ Tout voir</button>
+          <button class="filter-btn" onclick="filterCat('incendie',this)">🧯 Sécurité incendie</button>
+          <button class="filter-btn" onclick="filterCat('nuisibles',this)">🪲 Anti-nuisibles</button>
+          <button class="filter-btn" onclick="filterCat('hygiene',this)">🧹 Hygiène</button>
+          <button class="filter-btn" onclick="filterCat('epi',this)">🦺 EPI</button>
+          <button class="filter-btn" onclick="filterCat('bureau',this)">📦 Fournitures</button>
+        </div>
+      </div>
+      <div class="products-area">
+        <div class="products-count" id="products-count">12 produits</div>
+        <div class="product-grid" id="product-grid">
+          <div class="prod-card" data-cat="incendie"><div class="prod-img" style="background:#fff3ee;">🧯</div><div class="prod-body"><span class="prod-cat">Sécurité incendie</span><h4>Extincteur CO₂ 2kg</h4><p>Homologué EN3, feux électriques et liquides. Support mural inclus.</p><div class="prod-footer"><span class="prod-price">89 €<span class="prod-ht"> HT</span></span><button class="prod-btn" onclick="addToCart(this,'Extincteur CO₂ 2kg',89,'🧯')">Ajouter →</button></div></div></div>
+          <div class="prod-card" data-cat="incendie"><div class="prod-img" style="background:#fff3ee;">🔔</div><div class="prod-body"><span class="prod-cat">Sécurité incendie</span><h4>Détecteur de fumée NF</h4><p>Certifié NF, alarme 85dB, autonomie 10 ans.</p><div class="prod-footer"><span class="prod-price">24 €<span class="prod-ht"> HT</span></span><button class="prod-btn" onclick="addToCart(this,'Détecteur de fumée NF',24,'🔔')">Ajouter →</button></div></div></div>
+          <div class="prod-card" data-cat="incendie"><div class="prod-img" style="background:#fff3ee;">🚪</div><div class="prod-body"><span class="prod-cat">Sécurité incendie</span><h4>Panneau évacuation lumineux</h4><p>Signalétique conforme ISO 7010 avec éclairage de secours.</p><div class="prod-footer"><span class="prod-price">38 €<span class="prod-ht"> HT</span></span><button class="prod-btn" onclick="addToCart(this,'Panneau évacuation lumineux',38,'🚪')">Ajouter →</button></div></div></div>
+          <div class="prod-card" data-cat="incendie"><div class="prod-img" style="background:#fff3ee;">🧰</div><div class="prod-body"><span class="prod-cat">Sécurité incendie</span><h4>Trousse premiers secours CE</h4><p>Conforme CE pour 20 personnes.</p><div class="prod-footer"><span class="prod-price">54 €<span class="prod-ht"> HT</span></span><button class="prod-btn" onclick="addToCart(this,'Trousse premiers secours CE',54,'🧰')">Ajouter →</button></div></div></div>
+          <div class="prod-card" data-cat="nuisibles"><div class="prod-img" style="background:#f0faef;">🪤</div><div class="prod-body"><span class="prod-cat">Anti-nuisibles</span><h4>Station d'appâtage pro</h4><p>Boîtier sécurisé anti-effraction pour rongeurs.</p><div class="prod-footer"><span class="prod-price">19 €<span class="prod-ht"> HT</span></span><button class="prod-btn" onclick="addToCart(this,&quot;Station d'appâtage pro&quot;,19,'🪤')">Ajouter →</button></div></div></div>
+          <div class="prod-card" data-cat="nuisibles"><div class="prod-img" style="background:#f0faef;">💨</div><div class="prod-body"><span class="prod-cat">Anti-nuisibles</span><h4>Insecticide professionnel 5L</h4><p>Large spectre blattes, fourmis, punaises.</p><div class="prod-footer"><span class="prod-price">62 €<span class="prod-ht"> HT</span></span><button class="prod-btn" onclick="addToCart(this,'Insecticide professionnel 5L',62,'💨')">Ajouter →</button></div></div></div>
+          <div class="prod-card" data-cat="hygiene"><div class="prod-img" style="background:#eef6ff;">🧴</div><div class="prod-body"><span class="prod-cat">Hygiène & entretien</span><h4>Distributeur gel hydroalcoolique</h4><p>Mural 1L sans contact, rechargeable.</p><div class="prod-footer"><span class="prod-price">45 €<span class="prod-ht"> HT</span></span><button class="prod-btn" onclick="addToCart(this,'Distributeur gel hydroalcoolique',45,'🧴')">Ajouter →</button></div></div></div>
+          <div class="prod-card" data-cat="hygiene"><div class="prod-img" style="background:#eef6ff;">🧺</div><div class="prod-body"><span class="prod-cat">Hygiène & entretien</span><h4>Kit nettoyage sols pro</h4><p>Chariot + serpillère microfibre + seau + produit 5L.</p><div class="prod-footer"><span class="prod-price">118 €<span class="prod-ht"> HT</span></span><button class="prod-btn" onclick="addToCart(this,'Kit nettoyage sols pro',118,'🧺')">Ajouter →</button></div></div></div>
+          <div class="prod-card" data-cat="epi"><div class="prod-img" style="background:#fdf8ee;">🦺</div><div class="prod-body"><span class="prod-cat">EPI & sécurité</span><h4>Gilet haute visibilité EN471</h4><p>Classe 2, bandes rétroréfléchissantes.</p><div class="prod-footer"><span class="prod-price">12 €<span class="prod-ht"> HT</span></span><button class="prod-btn" onclick="addToCart(this,'Gilet haute visibilité EN471',12,'🦺')">Ajouter →</button></div></div></div>
+          <div class="prod-card" data-cat="epi"><div class="prod-img" style="background:#fdf8ee;">🧤</div><div class="prod-body"><span class="prod-cat">EPI & sécurité</span><h4>Gants nitrile résistants ×100</h4><p>Protection chimique et mécanique, sans latex.</p><div class="prod-footer"><span class="prod-price">28 €<span class="prod-ht"> HT</span></span><button class="prod-btn" onclick="addToCart(this,'Gants nitrile ×100',28,'🧤')">Ajouter →</button></div></div></div>
+          <div class="prod-card" data-cat="bureau"><div class="prod-img" style="background:#f5f0ff;">📦</div><div class="prod-body"><span class="prod-cat">Fournitures</span><h4>Étiquettes d'inventaire ×500</h4><p>Adhésives numérotées, pour gestion de stock.</p><div class="prod-footer"><span class="prod-price">22 €<span class="prod-ht"> HT</span></span><button class="prod-btn" onclick="addToCart(this,&quot;Étiquettes d'inventaire ×500&quot;,22,'📦')">Ajouter →</button></div></div></div>
+          <div class="prod-card" data-cat="bureau"><div class="prod-img" style="background:#f5f0ff;">🗂️</div><div class="prod-body"><span class="prod-cat">Fournitures</span><h4>Logiciel gestion de stock</h4><p>Licence annuelle 3 utilisateurs, alertes réappro.</p><div class="prod-footer"><span class="prod-price">199 €<span class="prod-ht"> /an HT</span></span><button class="prod-btn" onclick="addToCart(this,'Logiciel gestion de stock',199,'🗂️')">Ajouter →</button></div></div></div>
+        </div>
+        <p style="margin-top:40px;font-size:14px;color:var(--mid);text-align:center;">Vous ne trouvez pas ce qu'il vous faut ? <a href="contact.html" style="color:var(--orange);font-weight:600;">Contactez-nous</a> — nous sourçons tout type de matériel professionnel.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header"><h3>🛒 Mon panier</h3><button class="cart-close" onclick="closeCart()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+  <div class="cart-items" id="cart-items"><div class="cart-empty-p"><div class="ei">🛒</div><p>Votre panier est vide</p></div></div>
+  <div class="cart-footer" id="cart-footer" style="display:none;">
+    <div class="cart-total-row"><span class="cart-total-label">Total HT</span><span class="cart-total-amount" id="cart-total">0 €</span></div>
+    <button class="cart-checkout" onclick="checkoutCart()">Envoyer la demande de devis →</button>
+    <p class="cart-checkout-note">Nous vous contacterons sous 24h pour confirmer votre commande.</p>
+  </div>
+</div>
+
+<button class="cart-float" id="cart-float" onclick="openCart()">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+  Panier <span class="cart-badge-float" id="cart-float-badge">0</span>
+</button>
+
+<div id="footer-placeholder"></div>
+<script src="components.js"></script>
+<script>
+renderHeader('marketplace'); renderFooter();
+let cart = {};
+function filterCat(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  let visible = 0;
+  document.querySelectorAll('.prod-card').forEach(card => {
+    const show = cat === 'all' || card.dataset.cat === cat;
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  document.getElementById('products-count').textContent = visible + ' produit' + (visible > 1 ? 's' : '');
+}
+function addToCart(btn, name, price, emoji) {
+  cart[name] = { name, price, emoji, qty: (cart[name]?.qty || 0) + 1 };
+  updateCartUI();
+  btn.textContent = '✓ Ajouté'; btn.classList.add('added');
+  setTimeout(() => { btn.textContent = 'Ajouter →'; btn.classList.remove('added'); }, 1200);
+  showToast('✓ ' + name + ' ajouté', 'success');
+}
+function updateCartUI() {
+  const items = Object.values(cart);
+  const total = items.reduce((s,i) => s + i.price * i.qty, 0);
+  const count = items.reduce((s,i) => s + i.qty, 0);
+  const floatBtn = document.getElementById('cart-float');
+  floatBtn.classList.toggle('visible', count > 0);
+  document.getElementById('cart-float-badge').textContent = count;
+  const container = document.getElementById('cart-items');
+  const footer = document.getElementById('cart-footer');
+  if (items.length === 0) {
+    container.innerHTML = '<div class="cart-empty-p"><div class="ei">🛒</div><p>Votre panier est vide</p></div>';
+    footer.style.display = 'none';
+  } else {
+    footer.style.display = 'block';
+    document.getElementById('cart-total').textContent = total + ' €';
+    container.innerHTML = items.map(item => `
+      <div class="cart-item">
+        <span class="cart-item-emoji">${item.emoji}</span>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">${item.price} € HT × ${item.qty} = ${item.price * item.qty} €</div>
+        </div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty('${item.name}',-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${item.name}',1)">+</button>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+function changeQty(name, delta) {
+  if (!cart[name]) return;
+  cart[name].qty += delta;
+  if (cart[name].qty <= 0) delete cart[name];
+  updateCartUI();
+}
+function openCart() { document.getElementById('cart-overlay').classList.add('open'); document.getElementById('cart-panel').classList.add('open'); }
+function closeCart() { document.getElementById('cart-overlay').classList.remove('open'); document.getElementById('cart-panel').classList.remove('open'); }
+function checkoutCart() {
+  const items = Object.values(cart);
+  if (!items.length) return;
+  const msg = 'Je souhaite commander :\n' + items.map(i => `- ${i.name} ×${i.qty} (${i.price * i.qty} € HT)`).join('\n');
+  closeCart();
+  window.location.href = 'contact.html?service=Commande marketplace&message=' + encodeURIComponent(msg);
+}
+</script>
+</body>
+</html>

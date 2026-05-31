@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact & Devis — ABE Property Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .contact-layout { display: flex; gap: 60px; flex-wrap: wrap; }
+    .contact-form-wrap { flex: 1; min-width: 320px; background: white; border-radius: 12px; padding: 40px; border: 1px solid var(--border); }
+    .contact-form-wrap h2 { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 8px; }
+    .contact-form-wrap > p { font-size: 15px; color: var(--mid); margin-bottom: 28px; }
+    .contact-info { flex: 0 0 300px; }
+    .contact-info-card { background: var(--dark); border-radius: 12px; padding: 32px; margin-bottom: 16px; }
+    .contact-info-card h3 { font-size: 16px; font-weight: 700; color: white; margin-bottom: 20px; }
+    .contact-info-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+    .contact-info-row svg { flex-shrink: 0; color: var(--orange); margin-top: 2px; }
+    .contact-info-row a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .contact-info-row a:hover { color: white; }
+    .submit-btn { width: 100%; background: var(--orange); color: white; border: none; padding: 15px; border-radius: 6px; font-size: 15px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.2s; margin-top: 8px; }
+    .submit-btn:hover { background: var(--orange-dark); }
+    .form-success { display: none; background: #dcfce7; color: #16a34a; border-radius: 6px; padding: 14px; font-size: 14px; font-weight: 500; margin-top: 12px; text-align: center; }
+  </style>
+</head>
+<body>
+<div id="header-placeholder"></div>
+<main>
+  <div class="page-hero" style="background:var(--orange);">
+    <span class="section-label" style="color:rgba(255,255,255,0.7);">Contact</span>
+    <h1 class="section-title" style="color:white;">Parlons de<br>votre projet</h1>
+    <p class="section-desc">Devis gratuit sous 24h — sans engagement.</p>
+  </div>
+  <div class="breadcrumb"><a href="index.html">Accueil</a> › <span>Contact</span></div>
+
+  <section>
+    <div class="contact-layout">
+      <div class="contact-form-wrap">
+        <h2>Demande de devis gratuit</h2>
+        <p>Remplissez le formulaire et Stanislas vous répond sous 24h.</p>
+        <form id="contact-form" action="https://formspree.io/f/VOTRE_ID_FORMSPREE" method="POST">
+          <div class="form-row" style="margin-bottom:12px;">
+            <div class="form-group"><label>Prénom *</label><input type="text" name="prenom" placeholder="Jean" required/></div>
+            <div class="form-group"><label>Nom *</label><input type="text" name="nom" placeholder="Dupont" required/></div>
+          </div>
+          <div class="form-group" style="margin-bottom:12px;"><label>Email *</label><input type="email" name="email" placeholder="jean@exemple.com" required/></div>
+          <div class="form-group" style="margin-bottom:12px;"><label>Téléphone</label><input type="tel" name="telephone" placeholder="06 00 00 00 00"/></div>
+          <div class="form-group" style="margin-bottom:12px;"><label>Société</label><input type="text" name="societe" placeholder="Votre entreprise"/></div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label>Service souhaité</label>
+            <select name="service" id="service-select">
+              <option>Gestion de propriétés</option>
+              <option>Maintenance & entretien</option>
+              <option>Facility Management</option>
+              <option>Dératisation</option>
+              <option>Désinsectisation</option>
+              <option>Sécurité incendie</option>
+              <option>Formation évacuation / SST</option>
+              <option>Déménagement & manutention</option>
+              <option>Petits travaux</option>
+              <option>Commande marketplace</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:12px;"><label>Message *</label><textarea name="message" id="form-message" placeholder="Décrivez brièvement votre besoin..." required></textarea></div>
+          <button type="submit" class="submit-btn" id="form-btn">Envoyer ma demande →</button>
+          <div class="form-success" id="form-success">✓ Message envoyé ! Stanislas vous répondra sous 24h.</div>
+        </form>
+      </div>
+
+      <div class="contact-info">
+        <div class="contact-info-card">
+          <h3>Nos coordonnées</h3>
+          <div class="contact-info-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div>25 rue de Ponthieu<br>75008 Paris, France</div>
+          </div>
+          <div class="contact-info-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.1 6.1l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+            <a href="tel:+33766632597">07 66 63 25 97</a>
+          </div>
+          <div class="contact-info-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+            <a href="mailto:abe.facilities@gmail.com">abe.facilities@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-info-card" style="background:var(--orange-light);border:1px solid var(--orange);">
+          <h3 style="color:var(--dark);">Horaires</h3>
+          <div class="contact-info-row" style="color:var(--mid);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <div>Lun—Ven : 8h00 – 19h00<br>Samedi : 9h00 – 17h00<br><strong style="color:var(--orange);">Urgences 24h/7j</strong></div>
+          </div>
+        </div>
+        <a href="https://wa.me/33766632597?text=Bonjour%20Stanislas%2C%20je%20souhaite%20un%20devis" target="_blank" style="display:flex;align-items:center;gap:12px;background:#25D366;color:white;padding:16px 20px;border-radius:12px;text-decoration:none;font-size:15px;font-weight:600;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a9.416 9.416 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.535 5.874L0 24l6.335-1.507A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.017-1.378l-.36-.213-3.728.887.928-3.618-.234-.372A9.818 9.818 0 1112 21.818z"/></svg>
+          Écrire sur WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer-placeholder"></div>
+<script src="components.js"></script>
+<script>
+renderHeader('contact'); renderFooter();
+const form = document.getElementById('contact-form');
+if(form) {
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('form-btn');
+    btn.textContent = 'Envoi...'; btn.disabled = true;
+    try {
+      const res = await fetch(form.action, { method:'POST', body: new FormData(form), headers: {'Accept':'application/json'} });
+      if(res.ok) { document.getElementById('form-success').style.display='block'; form.reset(); btn.textContent='Envoyé ✓'; }
+      else { btn.textContent='Erreur — réessayez'; btn.disabled=false; }
+    } catch(err) { btn.textContent='Erreur — réessayez'; btn.disabled=false; }
+  });
+}
+</script>
+</body>
+</html>

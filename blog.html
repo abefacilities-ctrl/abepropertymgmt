@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog — ABE Property Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 28px; margin-top: 48px; }
+    .blog-card { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+    .blog-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+    .blog-img { height: 200px; object-fit: cover; width: 100%; display: block; }
+    .blog-body { padding: 24px; }
+    .blog-cat { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+    .blog-title { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--dark); margin-bottom: 10px; line-height: 1.3; }
+    .blog-excerpt { font-size: 14px; line-height: 1.7; color: var(--mid); }
+    .blog-meta { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 12px; color: var(--mid); }
+    .blog-read-more { margin-left: auto; color: var(--orange); font-weight: 600; text-decoration: none; font-size: 12px; }
+  </style>
+</head>
+<body>
+<div id="header-placeholder"></div>
+<main>
+  <div class="page-hero">
+    <span class="section-label">Blog & Actualités</span>
+    <h1 class="section-title">Conseils & actualités</h1>
+    <p class="section-desc">Retrouvez nos conseils en facility management, gestion immobilière et sécurité.</p>
+  </div>
+  <div class="breadcrumb"><a href="index.html">Accueil</a> › <span>Blog</span></div>
+  <section>
+    <div class="blog-grid">
+      <div class="blog-card">
+        <img class="blog-img" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80" alt=""/>
+        <div class="blog-body">
+          <div class="blog-cat">Gestion immobilière</div>
+          <h2 class="blog-title">5 erreurs à éviter dans la gestion locative en 2025</h2>
+          <p class="blog-excerpt">La gestion locative comporte de nombreux pièges. Découvrez les 5 erreurs les plus fréquentes et comment les éviter pour optimiser vos revenus.</p>
+          <div class="blog-meta"><span>15 mars 2025</span><span>·</span><span>5 min de lecture</span><a href="#" class="blog-read-more">Lire →</a></div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <img class="blog-img" src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80" alt=""/>
+        <div class="blog-body">
+          <div class="blog-cat">Sécurité incendie</div>
+          <h2 class="blog-title">Réglementation incendie 2025 : ce qui change pour les ERP</h2>
+          <p class="blog-excerpt">Les nouvelles normes de sécurité incendie pour les établissements recevant du public. Ce que vous devez mettre en conformité dès maintenant.</p>
+          <div class="blog-meta"><span>8 mars 2025</span><span>·</span><span>7 min de lecture</span><a href="#" class="blog-read-more">Lire →</a></div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <img class="blog-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt=""/>
+        <div class="blog-body">
+          <div class="blog-cat">Nuisibles</div>
+          <h2 class="blog-title">Punaises de lit : comment réagir rapidement et efficacement</h2>
+          <p class="blog-excerpt">Face à une infestation de punaises de lit, chaque heure compte. Voici les étapes à suivre pour une intervention rapide et durable.</p>
+          <div class="blog-meta"><span>1 mars 2025</span><span>·</span><span>4 min de lecture</span><a href="#" class="blog-read-more">Lire →</a></div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <img class="blog-img" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" alt=""/>
+        <div class="blog-body">
+          <div class="blog-cat">Facility Management</div>
+          <h2 class="blog-title">Facility management externalisé : avantages pour les PME</h2>
+          <p class="blog-excerpt">Externaliser son facility management permet aux PME de se concentrer sur leur cœur de métier tout en réduisant leurs coûts opérationnels.</p>
+          <div class="blog-meta"><span>20 fév. 2025</span><span>·</span><span>6 min de lecture</span><a href="#" class="blog-read-more">Lire →</a></div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <img class="blog-img" src="https://images.unsplash.com/photo-1542744094-24638eff58bb?w=600&q=80" alt=""/>
+        <div class="blog-body">
+          <div class="blog-cat">Formation</div>
+          <h2 class="blog-title">SST obligatoire en entreprise : tout ce qu'il faut savoir</h2>
+          <p class="blog-excerpt">La formation Sauveteur Secouriste du Travail est-elle obligatoire ? Pour qui ? Quand renouveler ? Toutes les réponses.</p>
+          <div class="blog-meta"><span>12 fév. 2025</span><span>·</span><span>5 min de lecture</span><a href="#" class="blog-read-more">Lire →</a></div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <img class="blog-img" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" alt=""/>
+        <div class="blog-body">
+          <div class="blog-cat">Maintenance</div>
+          <h2 class="blog-title">Plan de maintenance préventive : pourquoi et comment l'établir</h2>
+          <p class="blog-excerpt">Un bon plan de maintenance préventive permet d'éviter les pannes coûteuses et d'allonger la durée de vie de vos équipements.</p>
+          <div class="blog-meta"><span>5 fév. 2025</span><span>·</span><span>8 min de lecture</span><a href="#" class="blog-read-more">Lire →</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer-placeholder"></div>
+<script src="components.js"></script>
+<script>renderHeader('blog'); renderFooter();</script>
+</body>
+</html>

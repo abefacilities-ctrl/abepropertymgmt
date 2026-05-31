@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mentions légales & CGV — ABE Property Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .legal-content { max-width: 760px; margin: 0 auto; }
+    .legal-section { margin-bottom: 48px; }
+    .legal-section h2 { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 16px; color: var(--dark); }
+    .legal-section h3 { font-size: 16px; font-weight: 700; margin: 20px 0 10px; color: var(--dark); }
+    .legal-section p, .legal-section li { font-size: 15px; line-height: 1.8; color: var(--mid); }
+    .legal-section ul { padding-left: 20px; margin-top: 8px; }
+    .legal-tabs { display: flex; gap: 8px; margin-bottom: 40px; }
+    .legal-tab { padding: 10px 20px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: white; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+    .legal-tab.active { background: var(--orange); border-color: var(--orange); color: white; }
+    .legal-panel { display: none; }
+    .legal-panel.active { display: block; }
+  </style>
+</head>
+<body>
+<div id="header-placeholder"></div>
+<main>
+  <div class="page-hero">
+    <span class="section-label">Informations légales</span>
+    <h1 class="section-title">Mentions légales & CGV</h1>
+    <p class="section-desc">Informations légales et conditions générales de vente d'ABE Property Management.</p>
+  </div>
+  <div class="breadcrumb"><a href="index.html">Accueil</a> › <span>Mentions légales</span></div>
+
+  <section>
+    <div class="legal-content">
+      <div class="legal-tabs">
+        <button class="legal-tab active" onclick="showTab('mentions', this)">Mentions légales</button>
+        <button class="legal-tab" onclick="showTab('cgv', this)">CGV</button>
+        <button class="legal-tab" onclick="showTab('confidentialite', this)">Confidentialité</button>
+      </div>
+
+      <div class="legal-panel active" id="tab-mentions">
+        <div class="legal-section">
+          <h2>Mentions légales</h2>
+          <h3>Éditeur du site</h3>
+          <p><strong>ABE Property Management</strong><br>Forme juridique : SAS<br>SIREN : 931 133 847<br>Siège social : 25 rue de Ponthieu, 75008 Paris<br>Dirigeant : Stanislas Riva<br>Email : abe.facilities@gmail.com<br>Téléphone : 07 66 63 25 97</p>
+          <h3>Hébergement</h3>
+          <p>Ce site est hébergé par Netlify, Inc., 44 Montgomery Street, Suite 300, San Francisco, California 94104, États-Unis.</p>
+          <h3>Propriété intellectuelle</h3>
+          <p>L'ensemble du contenu de ce site (textes, images, logos) est la propriété exclusive d'ABE Property Management. Toute reproduction est interdite sans autorisation écrite préalable.</p>
+        </div>
+      </div>
+
+      <div class="legal-panel" id="tab-cgv">
+        <div class="legal-section">
+          <h2>Conditions Générales de Vente</h2>
+          <h3>Article 1 — Objet</h3>
+          <p>Les présentes CGV régissent les relations commerciales entre ABE Property Management (ci-après "le Prestataire") et ses clients pour toutes prestations de services et ventes de produits.</p>
+          <h3>Article 2 — Devis et commandes</h3>
+          <p>Tout devis est valable 30 jours à compter de sa date d'émission. La commande est confirmée par la signature du devis ou le versement d'un acompte de 30%.</p>
+          <h3>Article 3 — Tarifs</h3>
+          <p>Les prix sont indiqués en euros HT. TVA applicable : 20%. Les prix peuvent être modifiés à tout moment mais les commandes confirmées sont au prix du devis signé.</p>
+          <h3>Article 4 — Paiement</h3>
+          <p>Les factures sont payables à 30 jours. Le paiement s'effectue par virement bancaire ou prélèvement SEPA selon accord. Tout retard de paiement entraîne des pénalités de 3 fois le taux d'intérêt légal.</p>
+          <h3>Article 5 — Responsabilité</h3>
+          <p>ABE Property Management est assuré en responsabilité civile professionnelle. Notre responsabilité est limitée au montant de la prestation concernée.</p>
+          <h3>Article 6 — Droit applicable</h3>
+          <p>Les présentes CGV sont soumises au droit français. Tout litige relève de la compétence exclusive des tribunaux de Paris.</p>
+        </div>
+      </div>
+
+      <div class="legal-panel" id="tab-confidentialite">
+        <div class="legal-section">
+          <h2>Politique de confidentialité</h2>
+          <h3>Données collectées</h3>
+          <p>ABE Property Management collecte uniquement les données nécessaires au traitement de vos demandes : nom, prénom, email, téléphone, adresse.</p>
+          <h3>Utilisation des données</h3>
+          <p>Vos données sont utilisées exclusivement pour répondre à vos demandes et gérer notre relation commerciale. Elles ne sont jamais vendues à des tiers.</p>
+          <h3>Durée de conservation</h3>
+          <p>Les données sont conservées pendant 3 ans après la dernière interaction, conformément à la réglementation française.</p>
+          <h3>Vos droits (RGPD)</h3>
+          <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement et de portabilité de vos données. Pour exercer ces droits : abe.facilities@gmail.com</p>
+          <h3>Cookies</h3>
+          <p>Ce site n'utilise pas de cookies de traçage. Seuls des cookies techniques essentiels au fonctionnement du site peuvent être utilisés.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer-placeholder"></div>
+<script src="components.js"></script>
+<script>
+renderHeader(''); renderFooter();
+function showTab(id, btn) {
+  document.querySelectorAll('.legal-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.legal-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
